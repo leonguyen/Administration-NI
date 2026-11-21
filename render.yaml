@@ -1,0 +1,15 @@
+# Render.com blueprint for the TailAdmin NiceGUI app.
+# Docs: https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: tailadmin-nicegui
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      # Render injects PORT automatically; NiceGUI reads it in main.py.
+      - key: PYTHONUNBUFFERED
+        value: "1"

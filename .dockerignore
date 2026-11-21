@@ -1,0 +1,12 @@
+.git
+.gitignore
+.venv
+__pycache__
+*.pyc
+.nicegui
+*.log
+.env
+supabase
+.lovable
+README.md
+render.yaml
