@@ -1,3 +1,9 @@
+# Python / NiceGUI
+.venv/
+__pycache__/
+*.pyc
+.nicegui/
+
 # Logs
 logs
 *.log

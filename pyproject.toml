@@ -1,0 +1,15 @@
+[project]
+name = "tailadmin-nicegui"
+version = "0.1.0"
+description = "TailAdmin dashboard rebuilt with NiceGUI (Python)"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "nicegui>=2.10.0",
+]
+
+[dependency-groups]
+dev = []
+
+[tool.uv]
+package = false
