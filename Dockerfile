@@ -13,7 +13,7 @@ RUN uv sync --frozen --no-dev
 
 # Copy the application source.
 COPY main.py ./
-COPY app ./app
+COPY sp ./sp
 COPY assets ./assets
 
 # Render supplies $PORT; default for local `docker run`.

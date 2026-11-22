@@ -50,7 +50,7 @@ The SQLite database is created automatically at `tailadmin.db` (override with
 
 ```
 main.py                 # entry point, routes
-app/
+sp/
   db.py                 # SQLite engine + session
   models.py             # SQLAlchemy models (FileItem, LocalAccount)
   auth_service.py       # argon2 auth, normalization, lockout
