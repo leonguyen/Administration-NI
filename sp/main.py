@@ -14,15 +14,15 @@ import os
 
 from nicegui import app, ui
 
-from app import (
+from sp import (
     account_page,
     dashboard_page,
     files_page,
     github_page,
     menu_page,
 )
-from app.db import init_db
-from app.theme import GLOBAL_CSS
+from sp.db import init_db
+from sp.theme import GLOBAL_CSS
 
 
 @app.on_startup

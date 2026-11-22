@@ -1,1 +1,0 @@
-"""TailAdmin (AdministrationRP) rebuilt with NiceGUI."""
