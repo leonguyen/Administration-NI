@@ -1,51 +1,91 @@
-"""TailAdmin dashboard rebuilt with NiceGUI (Python).
+"""TailAdmin (AdministrationRP) — NiceGUI entry point.
 
-Replaces the original React + TypeScript (TanStack Start / Vite) frontend.
-Run locally:            uv run python main.py
-Run in production/Docker: python main.py   (honors $PORT, binds 0.0.0.0)
+Replaces the original Reflex app. Routes:
+  /          Dashboard (Ecommerce)
+  /menu      Menu hierarchy management
+  /files     Private file manager (auth-guarded)
+  /github    GitHub Sync (feature unavailable)
+  /auth      Sign in / sign up
+  /account   Account profile (auth-guarded)
+
+Run locally:  uv run python main.py
 """
 import os
 
-from nicegui import ui
+from nicegui import app, ui
 
-import dashboard
-import menu
-from theme import GLOBAL_CSS
+from app import (
+    account_page,
+    dashboard_page,
+    files_page,
+    github_page,
+    menu_page,
+)
+from app.db import init_db
+from app.theme import GLOBAL_CSS
 
 
-def _shared_setup(title: str) -> None:
-    """Per-client global styling + head tags (NiceGUI 4 forbids global-scope UI)."""
-    ui.add_css(GLOBAL_CSS)
-    ui.colors(primary="#6d5efc")  # fallback; real palette comes from CSS tokens
-    ui.add_head_html(
-        f"<title>{title}</title>"
-        '<meta name="description" content="TailAdmin dashboard built with NiceGUI">'
-    )
+@app.on_startup
+def _startup():
+    init_db()
 
 
 @ui.page("/")
 def index():
-    _shared_setup("TailAdmin — Dashboard")
-    dashboard.build()
+    _setup("Dashboard — TailAdmin")
+    dashboard_page.build()
 
 
 @ui.page("/menu")
 def menu_route():
-    _shared_setup("Menu — TailAdmin")
-    menu.menu_page()
+    _setup("Menu — TailAdmin")
+    menu_page.build()
+
+
+@ui.page("/files")
+def files_route():
+    _setup("Files — TailAdmin")
+    files_page.build()
+
+
+@ui.page("/github")
+def github_route():
+    _setup("GitHub Sync — TailAdmin")
+    github_page.build()
+
+
+@ui.page("/auth")
+def auth_route():
+    _setup("Authentication — TailAdmin")
+    account_page.auth_build()
+
+
+@ui.page("/account")
+def account_route():
+    _setup("Account — TailAdmin")
+    account_page.account_build()
+
+
+def _setup(title: str):
+    ui.add_css(GLOBAL_CSS)
+    ui.colors(primary="#465FFF")
+    ui.add_head_html(
+        f"<title>{title}</title>"
+        '<link rel="preconnect" href="https://fonts.googleapis.com">'
+        '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
+        '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">'
+    )
 
 
 if __name__ in {"__main__", "__mp_main__"}:
-    # In production (Render/Docker) reload and browser auto-open are disabled and
-    # the server binds to 0.0.0.0 on the port provided by the platform ($PORT).
     in_container = bool(os.environ.get("PORT")) or os.path.exists("/.dockerenv")
     port = int(os.environ.get("PORT", "8080"))
     ui.run(
         title="TailAdmin",
         favicon="🧩",
-        dark=None,  # theme handled by CSS tokens + header toggle
-        reload=not in_container,
-        port=port,
         host="0.0.0.0",
+        port=port,
+        reload=not in_container,
         show=not in_container,
+        storage_secret=os.environ.get("STORAGE_SECRET", "tailadmin-dev-secret-change-me"),
     )

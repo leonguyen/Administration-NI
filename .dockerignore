@@ -3,10 +3,11 @@
 .venv
 __pycache__
 *.pyc
-.nicegui
-*.log
-.env
-supabase
-.lovable
+*.db
+.web
+.states
+.pytest_cache
+node_modules
+assets/external
 README.md
 render.yaml

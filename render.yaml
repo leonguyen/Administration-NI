@@ -1,4 +1,4 @@
-# Render.com blueprint for the TailAdmin NiceGUI app.
+# Render.com blueprint for the TailAdmin (NiceGUI) app.
 # Docs: https://render.com/docs/blueprint-spec
 services:
   - type: web
@@ -10,6 +10,12 @@ services:
     healthCheckPath: /
     autoDeploy: true
     envVars:
-      # Render injects PORT automatically; NiceGUI reads it in main.py.
       - key: PYTHONUNBUFFERED
         value: "1"
+      - key: STORAGE_SECRET
+        generateValue: true
+    disk:
+      # Persist the SQLite database across deploys/restarts.
+      name: tailadmin-data
+      mountPath: /app/data
+      sizeGB: 1

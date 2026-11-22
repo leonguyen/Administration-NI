@@ -1,136 +1,123 @@
-"""TailAdmin color palette + global CSS, ported from the original styles.css."""
+"""TailAdmin color palette + global CSS.
 
-# The exact oklch tokens from the React app's styles.css.
-LIGHT_TOKENS = {
-    "--background": "oklch(0.985 0.005 250)",
-    "--foreground": "oklch(0.22 0.03 260)",
-    "--card": "oklch(1 0 0)",
-    "--card-foreground": "oklch(0.22 0.03 260)",
-    "--primary": "oklch(0.58 0.2 265)",
-    "--primary-foreground": "oklch(0.99 0 0)",
-    "--secondary": "oklch(0.96 0.01 255)",
-    "--secondary-foreground": "oklch(0.3 0.03 260)",
-    "--muted": "oklch(0.96 0.01 255)",
-    "--muted-foreground": "oklch(0.55 0.02 260)",
-    "--accent": "oklch(0.94 0.02 260)",
-    "--accent-foreground": "oklch(0.3 0.03 260)",
-    "--border": "oklch(0.92 0.01 255)",
-    "--destructive": "oklch(0.577 0.245 27.325)",
-    "--success": "oklch(0.72 0.16 155)",
-    "--success-foreground": "oklch(0.25 0.08 155)",
-    "--success-bg": "oklch(0.95 0.05 155)",
-    "--danger": "oklch(0.63 0.22 20)",
-    "--danger-bg": "oklch(0.96 0.04 20)",
-}
+Matches the Reflex app's Tailwind classes: primary #465FFF, text #1D2939,
+background #F9FAFB, white cards, gray-200 borders.
+"""
 
-DARK_TOKENS = {
-    "--background": "oklch(0.129 0.042 264.695)",
-    "--foreground": "oklch(0.984 0.003 247.858)",
-    "--card": "oklch(0.208 0.042 265.755)",
-    "--card-foreground": "oklch(0.984 0.003 247.858)",
-    "--primary": "oklch(0.929 0.013 255.508)",
-    "--primary-foreground": "oklch(0.208 0.042 265.755)",
-    "--secondary": "oklch(0.279 0.041 260.031)",
-    "--secondary-foreground": "oklch(0.984 0.003 247.858)",
-    "--muted": "oklch(0.279 0.041 260.031)",
-    "--muted-foreground": "oklch(0.704 0.04 256.788)",
-    "--accent": "oklch(0.279 0.041 260.031)",
-    "--accent-foreground": "oklch(0.984 0.003 247.858)",
-    "--border": "oklch(1 0 0 / 10%)",
-    "--destructive": "oklch(0.704 0.191 22.216)",
-    "--success": "oklch(0.696 0.17 162.48)",
-    "--success-foreground": "oklch(0.984 0.003 247.858)",
-    "--success-bg": "oklch(0.30 0.08 155)",
-    "--danger": "oklch(0.704 0.191 22.216)",
-    "--danger-bg": "oklch(0.30 0.08 20)",
-}
+PRIMARY = "#465FFF"
+PRIMARY_HOVER = "#3641D9"
+TEXT = "#1D2939"
+BG = "#F9FAFB"
 
-GLOBAL_CSS = """
-:root {
-  --radius: 0.75rem;
-  %(light)s
-}
-body.dark {
-  %(dark)s
-}
-body {
-  background-color: var(--background) !important;
-  color: var(--foreground);
-}
+GLOBAL_CSS = f"""
+:root {{
+  --ta-primary: {PRIMARY};
+  --ta-primary-hover: {PRIMARY_HOVER};
+  --ta-text: {TEXT};
+  --ta-bg: {BG};
+  --ta-border: #E5E7EB;   /* gray-200 */
+  --ta-muted: #6B7280;    /* gray-500 */
+  --ta-muted-2: #9CA3AF;  /* gray-400 */
+  --ta-soft: #F3F4F6;     /* gray-100 */
+}}
+body {{
+  background-color: var(--ta-bg) !important;
+  color: var(--ta-text);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}}
 
-/* Card surface used across the dashboard */
-.ta-card {
-  background: var(--card);
-  border: 1px solid var(--border);
+.ta-card {{
+  background: #fff;
+  border: 1px solid var(--ta-border);
   border-radius: 1rem;
-  color: var(--card-foreground);
-}
-.ta-muted { color: var(--muted-foreground); }
-
-/* Sidebar nav links */
-.ta-nav-item {
-  display: flex; align-items: center; gap: .75rem;
-  width: 100%%; padding: .625rem .75rem; border-radius: .5rem;
-  font-size: .875rem; font-weight: 500; color: var(--foreground);
-  background: transparent; border: none; cursor: pointer; text-decoration: none;
-  transition: background .15s, color .15s;
-}
-.ta-nav-item:hover { background: var(--accent); }
-.ta-nav-item.active {
-  background: color-mix(in oklab, var(--primary) 12%%, transparent);
-  color: var(--primary);
-}
+  color: var(--ta-text);
+}}
+.ta-muted {{ color: var(--ta-muted); }}
 
 /* Primary button */
-.ta-btn-primary {
-  background: var(--primary); color: var(--primary-foreground);
-  border-radius: .5rem; padding: .5rem 1rem; font-size: .875rem; font-weight: 500;
-  border: none; cursor: pointer;
-}
-.ta-btn-primary:hover { filter: brightness(.95); }
+.ta-btn-primary {{
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  background: var(--ta-primary); color: #fff; border: none;
+  border-radius: .5rem; padding: .625rem 1rem; font-size: .875rem; font-weight: 500;
+  cursor: pointer; transition: background .15s;
+}}
+.ta-btn-primary:hover {{ background: var(--ta-primary-hover); }}
+.ta-btn-primary:disabled {{ opacity: .5; cursor: not-allowed; }}
 
-.ta-btn-ghost {
-  background: transparent; color: var(--foreground);
-  border: 1px solid var(--border); border-radius: .5rem;
-  padding: .5rem 1rem; font-size: .875rem; font-weight: 500; cursor: pointer;
-}
-.ta-btn-ghost:hover { background: var(--accent); }
+/* Secondary / ghost button */
+.ta-btn {{
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  background: #fff; color: var(--ta-text); border: 1px solid var(--ta-border);
+  border-radius: .5rem; padding: .625rem 1rem; font-size: .875rem; font-weight: 500;
+  cursor: pointer; transition: background .15s;
+}}
+.ta-btn:hover {{ background: #F9FAFB; }}
+.ta-btn:disabled {{ opacity: .5; cursor: not-allowed; }}
+
+.ta-btn-danger {{
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  background: #fff; color: #DC2626; border: 1px solid #FECACA;
+  border-radius: .5rem; padding: .625rem 1rem; font-size: .875rem; font-weight: 500;
+  cursor: pointer;
+}}
+.ta-btn-danger:hover {{ background: #FEF2F2; }}
 
 /* Inputs */
-.ta-input {
-  height: 2.5rem; width: 100%%; border-radius: .5rem;
-  border: 1px solid var(--border); background: var(--background);
-  padding: 0 .75rem; font-size: .875rem; color: var(--foreground); outline: none;
-}
-.ta-input:focus { border-color: var(--primary); }
+.ta-input {{
+  height: 2.75rem; width: 100%; border-radius: .5rem;
+  border: 1px solid var(--ta-border); background: #fff;
+  padding: 0 .75rem; font-size: .875rem; color: var(--ta-text); outline: none;
+}}
+.ta-input:focus {{ border-color: var(--ta-primary); box-shadow: 0 0 0 3px rgba(70,95,255,.15); }}
+
+/* Nav items */
+.ta-nav-item {{
+  display: flex; align-items: center; gap: .75rem; width: 100%;
+  padding: .75rem; border-radius: .5rem; font-size: .875rem; font-weight: 500;
+  color: #4B5563; background: transparent; border: none; cursor: pointer;
+  text-decoration: none; transition: background .15s, color .15s;
+}}
+.ta-nav-item:hover {{ background: #F3F4F6; }}
+.ta-nav-item.active {{ background: rgba(70,95,255,.10); color: var(--ta-primary); }}
+
+.ta-nav-child {{
+  display: block; margin: .25rem 0 .25rem 2.25rem; padding: .625rem .75rem;
+  border-radius: .5rem; font-size: .875rem; color: #4B5563; text-decoration: none;
+}}
+.ta-nav-child:hover {{ background: #F3F4F6; }}
+.ta-nav-child.active {{ background: rgba(70,95,255,.10); color: var(--ta-primary); font-weight: 500; }}
 
 /* Table */
-.ta-table { width: 100%%; border-collapse: collapse; font-size: .875rem; }
-.ta-table thead th {
-  background: var(--muted); text-align: left; text-transform: uppercase;
-  letter-spacing: .05em; font-size: .75rem; color: var(--muted-foreground);
-  padding: .75rem 1.5rem; font-weight: 500;
-}
-.ta-table tbody td { padding: 1rem 1.5rem; border-top: 1px solid var(--border); }
-.ta-table tbody tr:hover { background: var(--accent); }
+.ta-table {{ width: 100%; border-collapse: collapse; font-size: .875rem; }}
+.ta-table thead th {{
+  background: var(--ta-soft); text-align: left; text-transform: uppercase;
+  letter-spacing: .05em; font-size: .75rem; color: var(--ta-muted);
+  padding: .75rem 1.25rem; font-weight: 500;
+}}
+.ta-table tbody td {{ padding: .875rem 1.25rem; border-top: 1px solid var(--ta-border); }}
+.ta-table tbody tr:hover {{ background: #F9FAFB; }}
 
-/* Icon buttons inside tables */
-.ta-icon-btn {
-  background: transparent; border: none; cursor: pointer;
-  padding: .375rem; border-radius: .375rem; font-size: .875rem;
-  color: var(--muted-foreground); line-height: 1;
-}
-.ta-icon-btn:hover { background: var(--accent); color: var(--foreground); }
-.ta-icon-btn.danger:hover {
-  background: var(--danger-bg); color: var(--danger);
-}
+/* Badges */
+.ta-badge {{
+  display: inline-flex; align-items: center; gap: .25rem; border-radius: 9999px;
+  padding: .25rem .75rem; font-size: .75rem; font-weight: 500;
+}}
+.ta-badge.green {{ background: #DCFCE7; color: #166534; }}
+.ta-badge.red {{ background: #FEE2E2; color: #B91C1C; }}
+.ta-badge.amber {{ background: #FEF3C7; color: #92400E; }}
+.ta-badge.gray {{ background: #F3F4F6; color: #4B5563; }}
+.ta-badge.indigo {{ background: #EEF2FF; color: var(--ta-primary); }}
 
-/* Badge */
-.ta-badge {
-  display: inline-flex; align-items: center; gap: .25rem;
-  border-radius: 9999px; padding: .125rem .5rem; font-size: .75rem; font-weight: 500;
-}
-.ta-badge.up { background: var(--success-bg); color: var(--success-foreground); }
-.ta-badge.down { background: var(--danger-bg); color: var(--danger); }
-""" % {"light": "\n  ".join(f"{k}: {v};" for k, v in LIGHT_TOKENS.items()),
-       "dark": "\n  ".join(f"{k}: {v};" for k, v in DARK_TOKENS.items())}
+/* Icon buttons in tables */
+.ta-icon-btn {{
+  background: transparent; border: none; cursor: pointer; padding: .375rem;
+  border-radius: .375rem; color: var(--ta-muted); line-height: 1; font-size: 1rem;
+}}
+.ta-icon-btn:hover {{ background: var(--ta-soft); color: var(--ta-text); }}
+.ta-icon-btn.danger:hover {{ background: #FEF2F2; color: #DC2626; }}
+
+/* Utility text colors */
+.ta-label {{ font-size: .875rem; font-weight: 500; color: var(--ta-text); }}
+.ta-section-title {{ font-size: 1.125rem; font-weight: 600; color: var(--ta-text); }}
+.ta-page-title {{ font-size: 1.5rem; font-weight: 600; letter-spacing: -0.025em; color: var(--ta-text); }}
+"""
